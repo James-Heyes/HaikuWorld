@@ -1,6 +1,6 @@
 import tweepy
 import time
-from credentials import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_KEY, ACCESS_SECRET
+#from credentials import CONSUMER_KEY, CONSUMER_SECRET, ACCESS_KEY, ACCESS_SECRET
 from os import environ
 
 CONSUMER_KEY = environ['CONSUMER_KEY']
