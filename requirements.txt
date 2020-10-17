@@ -1,2 +1,6 @@
 tweepy
 flask
+bs4
+requests
+django
+django-heroku
