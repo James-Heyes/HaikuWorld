@@ -3,7 +3,7 @@ from os import environ
 import requests
 from django.shortcuts import render
 from django.http import HttpResponse
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 app = Flask(__name__)
 
 @app.route('/getmsg/', methods=['GET'])
@@ -47,21 +47,11 @@ def post_something():
 
 # A welcome message to test our server
 @app.route('/')
+@app.route('/index')
 def index():
-    return "<h1>Welcome to our server !!</h1>"
+    return render_template('index.html', title='Home', user='test')
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
-'''
-app = Flask(__name__)
-app.run(host= '0.0.0.0', port=environ.get('PORT'))
-
-
-@app.route('/')
-def hello_world():
-    r = requests.get('http://httpbin.org/status/418')
-    return HttpResponse('<pre>' + r.text + '</pre>')
-'''
