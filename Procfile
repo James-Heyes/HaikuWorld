@@ -1,2 +1,1 @@
-web: python server.py
-worker: python twitterBot.py
+web: gunicorn run:app --log-file=- 

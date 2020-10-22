@@ -1,0 +1,271 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<!--<style>
+    body {
+          background-image: url('static/assets/images/Japanese-Garden-Maple-Fall.jpg');
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          }
+</style>-->
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- [ breadcrumb ] start -->
+
+            <!-- [ breadcrumb ] end -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- [ Main Content ] start -->
+                    <div class="row">
+                        <!--[ Recent Users ] start-->
+                        <div class="col-xl-8 col-md-6">
+                            <div class="card Recent-Users">
+                                <div class="card-header">
+                                    <h5>Pending Poems</h5>
+                                </div>
+                                <div class="card-block px-0 py-3">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                {% for poem in pendingPoems %}
+                                                <tr class="unread">
+                                                    <td><img class="rounded-circle" style="width:40px;" src="/static/assets/images/user/avatar-{{ ['1', '2', '3', '4', '5'] | random }}.jpg" alt="activity-user"></td>
+                                                    <td>
+                                                        <h6 class="mb-1">{{ poem.title }}</h6>
+                                                        {% autoescape false %}
+                                                        <p class="m-0">{{ poem.body | newline_to_br }}</p>
+                                                        {% endautoescape %}
+                                                    </td>
+                                                    <td>
+                                                        <h6 class="text-muted"><i class="fas fa-circle text-c-green f-10 m-r-15"></i>{{ poem.postDate.strftime('%-H:%M %m/%d/%y')}}</h6>
+                                                    </td>
+                                                    <td>
+                                                        <form>
+                                                            <a href="#!" id=reject value="{{poem.id}}"><button type="button" class="label theme-bg2 text-white f-12" style="border:0;cursor:pointer;" value="{{poem.id}}">Reject</button></a>
+                                                            <a href="#!" id=accept value="{{poem.id}}"><button type="button" class="label theme-bg text-white f-12" style="border:0;cursor:pointer;"  value="{{poem.id}}">Approve</button></a>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--[ Recent Users ] end-->
+                        <div class="col-xl-8 col-md-6">
+                            <div class="card Recent-Users">
+                                <div class="card-header">
+                                    <h5>Completed Poems</h5>
+                                </div>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Approved Poems</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Rejected Poems</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Used</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="work-tab" data-toggle="tab" href="#work" role="tab" aria-controls="work" aria-selected="false">All</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade active show" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Poem</th>
+                                                <th>Contents</th>
+                                                <th>Time</th>
+                                                <th>Status</th>
+                                                <th class="text-right"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for poem in approvedPoems %}
+                                            <tr>
+                                                <td>
+                                                    <h6 class="m-0"><img class="rounded-circle" style="width:40px;" src="/static/assets/images/user/avatar-{{ ['1', '2', '3', '4', '5'] | random }}.jpg" alt="activity-user">{{ poem.title }}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0">{{ poem.body | newline_to_br}}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0">{{ poem.postDate.strftime('%-H:%M %m/%d/%y')}}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0 text-c-green">Done</h6>
+                                                </td>
+                                                <td>
+                                                    <form>
+                                                        <a href="#!" id=undo value="{{poem.id}}"><button type="button" class="label theme-bg2 text-white f-12" style="border:0;cursor:pointer;" value="{{poem.id}}">Undo</button></a>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Poem</th>
+                                                <th>Contents</th>
+                                                <th>Time</th>
+                                                <th>Status</th>
+                                                <th class="text-right"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for poem in rejectedPoems %}
+                                            <tr>
+                                                <td>
+                                                    <h6 class="m-0"><img class="rounded-circle" style="width:40px;" src="/static/assets/images/user/avatar-{{ ['1', '2', '3', '4', '5'] | random }}.jpg" alt="activity-user">{{ poem.title }}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0">{{ poem.body | newline_to_br }}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0">{{ poem.postDate.strftime('%-H:%M %m/%d/%y')}}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0 text-c-green">Done</h6>
+                                                </td>
+                                                <td>
+                                                    <form>
+                                                        <a href="#!" id=undo value="{{poem.id}}"><button type="button" class="label theme-bg2 text-white f-12" style="border:0;cursor:pointer;" value="{{poem.id}}">Undo</button></a>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Poem</th>
+                                                <th>Contents</th>
+                                                <th>Time</th>
+                                                <th>Status</th>
+                                                <th class="text-right"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for poem in usedPoems %}
+                                            <tr>
+                                                <td>
+                                                    <h6 class="m-0"><img class="rounded-circle" style="width:40px;" src="/static/assets/images/user/avatar-{{ ['1', '2', '3', '4', '5'] | random }}.jpg" alt="activity-user">{{ poem.title }}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0">{{ poem.body | newline_to_br }}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0">{{ poem.postDate.strftime('%-H:%M %m/%d/%y')}}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0 text-c-green">Done</h6>
+                                                </td>
+                                                <td class="text-right"><i class="fas fa-circle text-c-green f-10"></i></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="work" role="tabpanel" aria-labelledby="work-tab">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Poem</th>
+                                                <th>Contents</th>
+                                                <th>Time</th>
+                                                <th>Status</th>
+                                                <th class="text-right"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for poem in rejectedPoems+approvedPoems %}
+                                            <tr>
+                                                <td>
+                                                    <h6 class="m-0"><img class="rounded-circle" style="width:40px;" src="/static/assets/images/user/avatar-{{ ['1', '2', '3', '4', '5'] | random }}.jpg" alt="activity-user">{{ poem.title }}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0">{{ poem.body | newline_to_br }}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0">{{ poem.postDate.strftime('%-H:%M %m/%d/%y')}}</h6>
+                                                </td>
+                                                <td>
+                                                    <h6 class="m-0 text-c-green">Done</h6>
+                                                </td>
+                                                <td class="text-right"><i class="fas fa-circle text-c-green f-10"></i></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- [ Main Content ] end -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script type=text/javascript> 
+    $('a#reject').click(function(event)
+        {
+            event.preventDefault();
+            clicked = $(this).attr('value');
+            $.ajax(
+                {
+                 type : 'POST',
+                 url : "{{url_for('home_blueprint.reject')}}",
+                 data : {'data':clicked}
+                });
+        });
+    $('a#accept').click(function(event)
+        {
+            event.preventDefault();
+            clicked = $(this).attr('value');
+            $.ajax(
+                {
+                 type : 'POST',
+                 url : "{{url_for('home_blueprint.accept')}}",
+                 data : {'data':clicked}
+                });
+        });
+    $('a#undo').click(function(event)
+        {
+            event.preventDefault();
+            clicked = $(this).attr('value');
+            $.ajax(
+                {
+                 type : 'POST',
+                 url : "{{url_for('home_blueprint.undo')}}",
+                 data : {'data':clicked}
+                });
+        });
+
+</script>
+{% endblock javascripts %}

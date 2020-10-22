@@ -1,6 +1,16 @@
+flask
+flask_login
+flask_migrate
+flask_wtf
+flask_sqlalchemy==2.*
+email_validator
+python-decouple
+gunicorn
+Flask-HTTPAuth==4.0.0
 tweepy
 flask
 bs4
 requests
 django
 django-heroku
+APScheduler==3.6.3
