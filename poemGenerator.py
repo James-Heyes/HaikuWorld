@@ -10,7 +10,7 @@ try:
     API_USERNAME = environ['API_USERNAME']
     API_PASSWORD = environ['API_PASSWORD']
 except:
-    API_URL = "http://localhost:5000/api/poems"
+    API_URL = "http://localhost:5000"
     API_USERNAME = 'test1'
     API_PASSWORD = 'test1'
 
@@ -24,21 +24,9 @@ def sendPoems(poemFile='outputPoems.json'):
         addNewPoem(title, poem)
 
 
-def generateHaiku():
-    # some bullshit
-    return ['''There once was a man from Nantucket\n<br/>
-            who pissed all day in a bucket\n<br/>
-            people came from far and near\n<br/>
-            to give him a cheer\n<br/>
-            and see whether he would fuck it.''',
-            "butts", "Dumps like a truck", "Macaroni in a pot",
-            "Wet-ass P-Word", "Fee fi fo fum large me in your throat",
-            "Pixar-mom lookin' ass", "Guys like what"]
-
-
 def addNewPoem(title, poem, overrideApproval=0):
     '''Posts poem to API'''
-    response = requests.post(API_URL,
+    response = requests.post(API_URL+"/api/poems",
                              json={"title":title,"body":poem},
                              auth=(API_USERNAME, API_PASSWORD))
     
@@ -47,14 +35,14 @@ def addNewPoem(title, poem, overrideApproval=0):
 
 def getPoembyIndex(id):
     '''Gets poem by index'''
-    response = requests.get(API_URL+'/'+str(id),
+    response = requests.get(API_URL+'/api/poems/'+str(id),
                             auth=(API_USERNAME, API_PASSWORD))
     
     return response.json()
 
 
 def getApprovedPoem(page=1, per_page=10):
-    response = requests.get(API_URL+'/approved',
+    response = requests.get(API_URL+'/api/poems/approved',
                             json={"page":page,"per_page":10},
                             auth=(API_USERNAME, API_PASSWORD))
         
@@ -63,7 +51,7 @@ def getApprovedPoem(page=1, per_page=10):
 
 def stampUsedPoem(id):
     '''Posts poem to API'''
-    response = requests.put(API_URL+'/stamp_used/'+str(id),
+    response = requests.put(API_URL+'/api/poems/stamp_used/'+str(id),
                              json={'used':1},
                              auth=(API_USERNAME, API_PASSWORD))
     

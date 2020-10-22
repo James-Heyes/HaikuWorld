@@ -62,10 +62,10 @@ def getPoem():
 def updateStatus(shutdown=0):
     poem = getPoem()
     if not poem:
+        pass
         #Sigh
         #mailHandler.alertEmail()
     while not poem:
-        #No Poem
         time.sleep(3600)
         poem = getPoem()
     try:
@@ -101,5 +101,5 @@ def updateLoop():
 
 
 if __name__ == "__main__":
+    poemGenerator.sendPoems()
     updateLoop()
-
