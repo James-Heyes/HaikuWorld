@@ -7,7 +7,10 @@ from app.api.errors import bad_request
 
 
 @bp.route('/poems/stamp_used/<int:id>', methods=['PUT'])
+@token_auth.login_required
 def stamp_used_poem(id):
+    if token_auth.current_user().id != 1:
+        abort(403)
     poem = Poem.query.get_or_404(id)
     data = request.get_json() or {}
     try:
@@ -19,12 +22,16 @@ def stamp_used_poem(id):
 
 
 @bp.route('/poems/stampUsed/<int:id>', methods=['GET'])
+@token_auth.login_required
 def get_poem(id):
     return jsonify(Poem.query.get_or_404(id).to_dict())
 
 
 @bp.route('/poems/approved', methods=['GET'])
+@token_auth.login_required
 def get_approved_poems():
+    if token_auth.current_user().id != 1:
+        abort(403)
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
     data = Poem.to_collection_dict(Poem.query.filter(Poem.approved==1, Poem.used==0), page, per_page, 'api.get_approved_poems')
@@ -32,7 +39,10 @@ def get_approved_poems():
 
 
 @bp.route('/poems/<int:id>', methods=['PUT'])
+@token_auth.login_required
 def update_poem(id):
+    if token_auth.current_user().id != 1:
+        abort(403)
     poem = Poem.query.get_or_404(id)
     data = request.get_json() or {}
     poem.from_dict(data)
@@ -41,8 +51,10 @@ def update_poem(id):
 
 
 @bp.route('/poems', methods=['POST'])
-@basic_auth.login_required
+@token_auth.login_required
 def create_poem():
+    if token_auth.current_user().id != 1:
+        abort(403)
     data = request.get_json() or {}
     if 'body' not in data:
         return bad_request('must include body field')
@@ -60,12 +72,13 @@ def create_poem():
 
 #@token_auth.login_required
 @bp.route('/users/<int:id>', methods=['GET'])
-@basic_auth.login_required
+@token_auth.login_required
 def get_user(id):
     return jsonify(User.query.get_or_404(id).to_dict())
 
 
 @bp.route('/users', methods=['GET'])
+@token_auth.login_required
 def get_users():
     page = request.args.get('page', 1, type=int)
     per_page = min(request.args.get('per_page', 10, type=int), 100)
@@ -74,6 +87,7 @@ def get_users():
 
 
 @bp.route('/users', methods=['POST'])
+@token_auth.login_required
 def create_user():
     data = request.get_json() or {}
     if 'username' not in data or 'email' not in data or 'password' not in data:
@@ -91,6 +105,11 @@ def create_user():
     response.headers['Location'] = url_for('api.get_user', id=user.id)
     return response
 
+@bp.route('/users/delete/<int:id>', methods=['PUT'])
+def delete_user(id):
+    if token_auth.current_user().id != 1:
+        abort(403)
+    return None
 
 @bp.route('/users/<int:id>', methods=['PUT'])
 def update_user(id):

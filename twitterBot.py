@@ -101,5 +101,5 @@ def updateLoop():
 
 
 if __name__ == "__main__":
-    poemGenerator.sendPoems()
+    #poemGenerator.sendPoems()
     updateLoop()

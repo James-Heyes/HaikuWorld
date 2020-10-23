@@ -3,14 +3,16 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+import base64
+import os
 from flask_login import UserMixin
 from sqlalchemy import Binary, Column, Integer, String, DateTime, Boolean
 from flask import current_app, url_for
 
 from app import db, login_manager
-
 from app.base.util import hash_pass
 import datetime
+from datetime import datetime, timedelta
 
 
 class PaginatedAPIMixin(object):
