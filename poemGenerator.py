@@ -73,7 +73,8 @@ def stampUsedPoem(id):
 
 
 if __name__ == "__main__":
-    sendPoems()
+    getToken()
+    #sendPoems()
     #print(getApprovedPoem(1))
     #stampUsedPoem(27)
    #sendPoems()

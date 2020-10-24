@@ -68,7 +68,7 @@ class JobSchedule(db.Model, PaginatedAPIMixin, UserMixin):
     def to_dict(self):
         data = {
             'id': self.id,
-            'scheduledTime': self.scheduledTime,
+            'scheduledTime': self.scheduledTime.isoformat(),
         }
         return data
 

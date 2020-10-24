@@ -1,10 +1,53 @@
 from flask import jsonify, request, url_for, abort
 from app import db
-from app.base.models import User, Poem
+from app.base.models import User, Poem, JobSchedule
 from app.api import bp
 from app.api.auth import token_auth, basic_auth
 from app.api.errors import bad_request
+import datetime
 
+
+@bp.route('/jobs/remove/<int:id>', methods=['POST'])
+@token_auth.login_required
+def remove_job(id):
+    if token_auth.current_user().id != 1:
+        abort(403)
+    job = JobSchedule.query.filter_by(id=id).first()
+    response = jsonify(job.to_dict())
+    db.session.delete(job)
+    db.session.commit()
+    response.status_code = 201
+    return response
+
+
+@bp.route('/jobs', methods=['POST'])
+@token_auth.login_required
+def create_job():
+    if token_auth.current_user().id != 1:
+        abort(403)
+    data = request.get_json() or {}
+    if 'scheduledTime' not in data:
+        return bad_request('must include scheduledTime field')
+    data['scheduledTime'] = datetime.datetime.fromisoformat(data['scheduledTime'])
+    job = JobSchedule()
+    job.from_dict(data)
+    db.session.add(job)
+    db.session.commit()
+    response = jsonify(job.to_dict())
+    response.status_code = 201
+    
+    return response
+
+
+@bp.route('/jobs', methods=['GET'])
+@token_auth.login_required
+def get_jobs():
+    if token_auth.current_user().id != 1:
+        abort(403)
+    jobs = db.session.query(JobSchedule).all()
+    jobs = [job.to_dict() for job in jobs]
+    return jsonify(jobs)
+    
 
 @bp.route('/poems/stamp_used/<int:id>', methods=['PUT'])
 @token_auth.login_required
