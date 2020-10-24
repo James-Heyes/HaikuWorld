@@ -1,0 +1,103 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} User Settings {% endblock %} 
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">User Settings</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Form Components</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">User Settings</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>User Controls</h5>
+                            </div>
+                            <div class="card-body">
+                                <h5>Password Reset</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form action="" method="post" novalidate>
+                                            {{ form.hidden_tag() }}
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Password</label>
+                                                {{ form.password(placeholder="Password", class="form-control", type="password", id="password") }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1Confirm">Confirm Password</label>
+                                                <input type="password" class="form-control" id="confirm_password" placeholder="Password">
+                                            </div>
+                                            <span id='message'></span>
+                                            <br>
+                                            <button type="submit" class="btn btn-primary" id="submit" name="submit" disabled="disabled" onclick="clicked();">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    $('#password, #confirm_password').on('input', function() {
+        if ($('#password').val() == $('#confirm_password').val())
+        {
+            if ($('#password').val().length < 7)
+            {
+                $('#message').html('Must be at least 7 characters.').css('color', 'red');
+                $("#submit").prop('disabled', false);
+            }
+            else
+            {
+                $('#message').html('Matching').css('color', 'green');
+                $("#submit").prop('disabled', false);
+            }
+        }
+        else
+        {
+            $('#message').html('Passwords must match.').css('color', 'red');
+            $("#submit").prop('disabled', true);
+        }
+    });
+    function clicked() {
+       if (confirm('Do you want to submit?')) {
+           yourformelement.submit();
+       } else {
+           return false;
+       }
+    }
+</script>
+{% endblock javascripts %}

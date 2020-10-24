@@ -5,6 +5,7 @@ Copyright (c) 2019 - present AppSeed.us
 
 import base64
 import os
+import sys
 from flask_login import UserMixin
 from sqlalchemy import Binary, Column, Integer, String, DateTime, Boolean
 from flask import current_app, url_for
@@ -37,6 +38,42 @@ class PaginatedAPIMixin(object):
             }
         }
         return data
+
+
+class JobSchedule(db.Model, PaginatedAPIMixin, UserMixin):
+    
+    __tablename__ = 'JobSchedule'
+
+    id = Column(Integer, primary_key=True)
+    scheduledTime = Column(DateTime)
+
+    def __init__(self, **kwargs):
+        for property, value in kwargs.items():
+            # depending on whether value is an iterable or not, we must
+            # unpack it's value (when **kwargs is request.form, some values
+            # will be a 1-element list)
+            if hasattr(value, '__iter__') and not isinstance(value, str):
+                # the ,= unpack of a singleton fails PEP8 (travis flake8 test)
+                value = value[0]
+                
+            setattr(self, property, value)
+
+
+    def from_dict(self, data):
+        for field in ['scheduledTime']:
+            if field in data:
+                setattr(self, field, data[field])
+    
+
+    def to_dict(self):
+        data = {
+            'id': self.id,
+            'scheduledTime': self.scheduledTime,
+        }
+        return data
+
+    def __repr__(self):
+        return str(self.scheduledTime)
 
 
 class User(db.Model, PaginatedAPIMixin, UserMixin):
@@ -91,6 +128,16 @@ class User(db.Model, PaginatedAPIMixin, UserMixin):
         return user
     
 
+    def reset_password(self, data):
+        if 'password' in data:
+            print("test", flush=True)
+            password = hash_pass(data['password']) # we need bytes here (not plain str)
+            setattr(self, 'password', password)
+        else:
+            print("fuck", flush=True)
+        return None
+
+
     def from_dict(self, data, new_user=False):
         for field in ['username', 'email', 'about_me']:
             if field in data:
@@ -98,6 +145,7 @@ class User(db.Model, PaginatedAPIMixin, UserMixin):
         if new_user and 'password' in data:
             self.set_password(data['password'])
     
+
     def to_dict(self, include_email=False):
         data = {
             'id': self.id,

@@ -106,12 +106,14 @@ def create_user():
     return response
 
 @bp.route('/users/delete/<int:id>', methods=['PUT'])
+@token_auth.login_required
 def delete_user(id):
     if token_auth.current_user().id != 1:
         abort(403)
     return None
 
 @bp.route('/users/<int:id>', methods=['PUT'])
+@token_auth.login_required
 def update_user(id):
     if token_auth.current_user().id != id:
         abort(403)
@@ -124,5 +126,17 @@ def update_user(id):
             User.query.filter_by(email=data['email']).first():
         return bad_request('please use a different email address')
     user.from_dict(data, new_user=False)
+    db.session.commit()
+    return jsonify(user.to_dict())
+
+
+@bp.route('/users/reset_password/<int:id>', methods=['PUT'])
+@token_auth.login_required
+def reset_password():
+    if token_auth.current_user().id != id:
+        abort(403)
+    user = User.query.get_or_404(id)
+    data = request.get_json() or {}
+    user.reset_password(data)
     db.session.commit()
     return jsonify(user.to_dict())

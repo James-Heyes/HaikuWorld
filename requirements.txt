@@ -16,3 +16,4 @@ django-heroku
 APScheduler==3.6.3
 sendgrid
 numpy
+rq

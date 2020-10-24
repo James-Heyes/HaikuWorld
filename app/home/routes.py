@@ -9,8 +9,10 @@ from flask import render_template, redirect, url_for, request
 from flask_login import login_required, current_user
 from app import login_manager
 from jinja2 import TemplateNotFound
+from app.base.forms import ResetPassForm
 from app.base.models import User, Poem
 from app.api import users
+import sys
 
 @blueprint.route('/index', methods=['GET', 'POST'])
 @login_required
@@ -29,6 +31,19 @@ def index():
                            poems=poems)
 
 
+@blueprint.route('/user_settings',  methods=['GET', 'POST'])
+@login_required
+def user_settings():
+    form = ResetPassForm(request.form)
+    if 'submit' in request.form:
+        password = request.form['password']
+        user = current_user
+        print(user, file=sys.stderr)
+        user.reset_password({"password":password})
+        db.session.commit()
+    return render_template('user_settings.html', title='User Settings', form=form)
+
+
 @blueprint.route('/reject', methods=['GET', 'POST'])
 @login_required
 def reject():
@@ -39,6 +54,7 @@ def reject():
         poem = Poem.query.get_or_404(clicked)
         poem.updateStatus(reject=1)
         db.session.commit()
+    
     return ("nothing")
 
 
@@ -52,6 +68,7 @@ def accept():
         poem = Poem.query.get_or_404(clicked)
         poem.updateStatus(accept=1)
         db.session.commit()
+    
     return ("nothing")
 
 
@@ -65,6 +82,7 @@ def undo():
         poem = Poem.query.get_or_404(clicked)
         poem.updateStatus(undo=1)
         db.session.commit()
+    
     return ("nothing")
 
 

@@ -4,8 +4,13 @@ Copyright (c) 2019 - present AppSeed.us
 """
  
 import hashlib, binascii, os
+import requests
 
-# Inspiration -> https://www.vitoshacademy.com/hashing-passwords-in-python/
+
+def count_words_at_url(url):
+    resp = requests.get(url)
+    return len(resp.text.split())
+
 
 def hash_pass( password ):
     """Hash a password for storing."""
@@ -14,6 +19,7 @@ def hash_pass( password ):
                                 salt, 100000)
     pwdhash = binascii.hexlify(pwdhash)
     return (salt + pwdhash) # return bytes
+
 
 def verify_pass(provided_password, stored_password):
     """Verify a stored password against one provided by user"""
