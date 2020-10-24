@@ -156,6 +156,7 @@ def scheduleJobs(jobs):
 def updateLoop():
     jobs = getJobs()
     print(jobs)
+    return None
     if not jobs:
         addJobsToDatabase()
         jobs = getJobs()
