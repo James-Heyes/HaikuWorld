@@ -103,8 +103,9 @@ def getPoem():
     return poem
 
 def sendTweet(poem):
-    api.update_status(poem['body'])
-    poemGenerator.stampUsedPoem(poem['id'])
+    print("sent!")
+    #api.update_status(poem['body'])
+    #poemGenerator.stampUsedPoem(poem['id'])
 
 
 def updateStatus(id):
