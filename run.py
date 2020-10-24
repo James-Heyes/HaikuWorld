@@ -27,7 +27,7 @@ except KeyError:
     exit('Error: Invalid <config_mode>. Expected values [Debug, Production] ')
 
 app = create_app( app_config ) 
-Migrate(app, db, compare_type=True)
+migrate = Migrate(app, db, compare_type=True)
 
 
 if __name__ == "__main__":
