@@ -106,7 +106,7 @@ def sendTweet(poem):
     print("sent!")
     body = poem['body']
     body += "\n\n#Haiku"
-    api.update_status(poem['body'])
+    api.update_status(body)
     poemGenerator.stampUsedPoem(poem['id'])
 
 
