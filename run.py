@@ -31,4 +31,5 @@ migrate = Migrate(app, db, compare_type=True)
 
 
 if __name__ == "__main__":
-    app.run()
+    pass
+    #app.run()
