@@ -142,6 +142,7 @@ def addJobsToDatabase():
     schedule = [datetime.datetime(year, month, day+(job//24 - weekday), job%24) for job in schedule]
     firstTime = today + datetime.timedelta(seconds=5)
     schedule = [firstTime] + schedule
+    print(schedule)
     for x, job in enumerate(schedule):
         addJob(job)
 
@@ -156,10 +157,12 @@ def scheduleJobs(jobs):
 def updateLoop():
     jobs = getJobs()
     print(jobs)
-    return None
     if not jobs:
+        print("adding Jobs")
         addJobsToDatabase()
+        print("jobs added")
         jobs = getJobs()
+        print(jobs)
     scheduleJobs(jobs)
     scheduler.start()
 
