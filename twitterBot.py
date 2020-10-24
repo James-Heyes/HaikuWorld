@@ -48,7 +48,7 @@ def addJob(date):
     response = requests.post(API_URL+"/api/jobs",
                              json={"scheduledTime":date},
                              headers={"Authorization": "Bearer "+token})
-    print(response.content)
+    #print(response.content)
     #return response.json()
 
 
@@ -67,7 +67,7 @@ def removeJob(id):
                              headers={"Authorization": "Bearer "+token})
     print(response.content)
     return None
-    #return response.json()
+
 
 
 def clearJobSchedule():
@@ -104,8 +104,10 @@ def getPoem():
 
 def sendTweet(poem):
     print("sent!")
-    #api.update_status(poem['body'])
-    #poemGenerator.stampUsedPoem(poem['id'])
+    body = poem['body']
+    body += "\n\n#Haiku"
+    api.update_status(poem['body'])
+    poemGenerator.stampUsedPoem(poem['id'])
 
 
 def updateStatus(id):
@@ -131,7 +133,7 @@ def updateStatus(id):
 
 
 def addJobsToDatabase():
-    schedule = createTwitterHeatMap.createTweetSchedule(14)
+    schedule = createTwitterHeatMap.createTweetSchedule(30)
     today = datetime.datetime.today()
     year, month, day, hour, minute, second = today.timetuple()[0:6]
     weekday = datetime.datetime.weekday(today)
@@ -144,6 +146,7 @@ def addJobsToDatabase():
     schedule = [firstTime] + schedule
     for x, job in enumerate(schedule):
         addJob(job)
+    print(scheduleJobs)
 
 
 def scheduleJobs(jobs):

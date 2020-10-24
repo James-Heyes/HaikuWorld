@@ -34,7 +34,6 @@ def create_job():
     db.session.add(job)
     db.session.commit()
     response = jsonify(job.to_dict())
-    response = jsonify({"test":"test"})
     response.status_code = 201
     
     return response
