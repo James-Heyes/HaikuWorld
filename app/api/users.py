@@ -30,9 +30,9 @@ def create_job():
         return bad_request('must include scheduledTime field')
     data['scheduledTime'] = datetime.datetime.fromisoformat(data['scheduledTime'])
     job = JobSchedule()
-    #job.from_dict(data)
-    #db.session.add(job)
-    #db.session.commit()
+    job.from_dict(data)
+    db.session.add(job)
+    db.session.commit()
     response = jsonify(job.to_dict())
     response.status_code = 201
     

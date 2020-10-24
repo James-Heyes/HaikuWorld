@@ -42,9 +42,8 @@ def getToken(username, password):
 
 
 def addJob(date):
-    date = datetime.datetime.isoformat(date)
     '''Posts Job to API'''
-    
+    date = datetime.datetime.isoformat(date)
     token = getToken(API_USERNAME, API_PASSWORD)
     response = requests.post(API_URL+"/api/jobs",
                              json={"scheduledTime":date},
@@ -142,7 +141,6 @@ def addJobsToDatabase():
     schedule = [datetime.datetime(year, month, day+(job//24 - weekday), job%24) for job in schedule]
     firstTime = today + datetime.timedelta(seconds=5)
     schedule = [firstTime] + schedule
-    print(schedule)
     for x, job in enumerate(schedule):
         addJob(job)
 
@@ -156,17 +154,14 @@ def scheduleJobs(jobs):
 
 def updateLoop():
     jobs = getJobs()
-    print(jobs)
     if not jobs:
-        print("adding Jobs")
         addJobsToDatabase()
-        print("jobs added")
         jobs = getJobs()
-        print(jobs)
     scheduleJobs(jobs)
     scheduler.start()
 
 
 if __name__ == "__main__":
+    clearJobSchedule()
     updateLoop()
 
