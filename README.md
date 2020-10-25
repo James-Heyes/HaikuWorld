@@ -1,9 +1,9 @@
-## Haiku World
+# Haiku World
 
 
 This Twitterbot is a poem generator with a flask front-end for administration, and API support for database access.
 
-# [View the Twitterbot!](https://twitter.com/Its_Haiku_Time)
+## [View the Twitterbot!](https://twitter.com/Its_Haiku_Time)
 
 <br />
 
