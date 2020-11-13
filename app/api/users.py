@@ -105,8 +105,8 @@ def create_poem():
     #    return bad_request('Poem already in database.')
     poem = Poem()
     poem.from_dict(data)
-    db.session.add(poem)
-    db.session.commit()
+    #db.session.add(poem)
+    #db.session.commit()
     response = jsonify(poem.to_dict())
     response.status_code = 201
     #response.headers['Location'] = url_for('api.get_user', id=user.id)
