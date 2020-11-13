@@ -193,7 +193,7 @@ class Poem(db.Model, PaginatedAPIMixin):
         for field in ['body', 'title']:
             if field in data:
                 setattr(self, field, data[field])
-        setattr(self, 'postDate', datetime.datetime.today())
+        #setattr(self, 'postDate', datetime.datetime.today())
         setattr(self, 'approved', 0)
         setattr(self, 'rejected', 0)
         setattr(self, 'used', 0)
