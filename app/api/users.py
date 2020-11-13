@@ -103,8 +103,8 @@ def create_poem():
     #    return bad_request('must include body field')
     #if Poem.query.filter_by(body=data['body']).first():
     #    return bad_request('Poem already in database.')
-    #poem = Poem()
-    #poem.from_dict(data)
+    poem = Poem()
+    poem.from_dict(data)
     #db.session.add(poem)
     #db.session.commit()
     response = jsonify({"fuck":"dicks"})
