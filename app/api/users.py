@@ -99,10 +99,10 @@ def create_poem():
     if token_auth.current_user().id != 1:
         abort(403)
     data = request.get_json() or {}
-    if 'body' not in data:
-        return bad_request('must include body field')
-    if Poem.query.filter_by(body=data['body']).first():
-        return bad_request('Poem already in database.')
+    #if 'body' not in data:
+    #    return bad_request('must include body field')
+    #if Poem.query.filter_by(body=data['body']).first():
+    #    return bad_request('Poem already in database.')
     poem = Poem()
     poem.from_dict(data)
     db.session.add(poem)

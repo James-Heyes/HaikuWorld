@@ -1,6 +1,6 @@
 import json
 
-with open('outputPoems.txt', 'r') as outfile:
+with open('outputPoems-2.txt', 'r') as outfile:
     poems = outfile.read()
 
 with open('cmu_dict.json', 'r') as json_file:
@@ -24,5 +24,5 @@ poems = [x for x in poems.split('<|endoftext|>') if x]
 print(len(poems))
 poems = [poem for poem in poems if sum(countSyllablesInText(poem)) == 17]
 
-with open("outputPoems.json", 'w') as outfile:
+with open("outputPoems2.json", 'w') as outfile:
     outfile.write(json.dumps(poems))

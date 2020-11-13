@@ -156,16 +156,22 @@ def scheduleJobs(jobs):
                           args=[job['id']])
 
 
+def pingDB():
+    '''Pings to keep worker awake'''
+    return "Ping!"
+
+
 def updateLoop():
     jobs = getJobs()
     if not jobs:
         addJobsToDatabase()
         jobs = getJobs()
     scheduleJobs(jobs)
+
     scheduler.start()
 
 
 if __name__ == "__main__":
-    clearJobSchedule()
+    #clearJobSchedule()
     updateLoop()
 
