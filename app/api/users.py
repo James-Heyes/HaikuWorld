@@ -103,11 +103,12 @@ def create_poem():
     #    return bad_request('must include body field')
     #if Poem.query.filter_by(body=data['body']).first():
     #    return bad_request('Poem already in database.')
-    poem = Poem()
-    poem.from_dict(data)
+    #poem = Poem()
+    #poem.from_dict(data)
     #db.session.add(poem)
     #db.session.commit()
-    response = jsonify(poem.to_dict())
+    response = jsonify({"fuck":"dicks"})
+    #response = jsonify(poem.to_dict())
     response.status_code = 201
     #response.headers['Location'] = url_for('api.get_user', id=user.id)
     return response
