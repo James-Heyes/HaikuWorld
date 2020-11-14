@@ -162,6 +162,7 @@ def pingDB():
 
 
 def updateLoop():
+    scheduler.add_job(pingDB, 'interval', minutes=30)
     jobs = getJobs()
     if not jobs:
         addJobsToDatabase()
