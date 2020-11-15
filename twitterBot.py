@@ -59,8 +59,8 @@ def getJobs():
     jobs = response.json()
     for job in jobs:
         if not jobInFuture(job):
-        removeJob(job['id'])
-        jobs.remove(job)
+            removeJob(job['id'])
+            jobs.remove(job)
     
     return jobs
 
@@ -169,7 +169,7 @@ def pingDB():
 
 def jobInFuture(job):
     '''Checks if job schedule is still ahead'''
-    job = datetime.datetime.fromisoformat(job['scheduledTime']
+    job = datetime.datetime.fromisoformat(job['scheduledTime'])
 
     return (datetime.datetime.now() - job) < datetime.timedelta()
 
