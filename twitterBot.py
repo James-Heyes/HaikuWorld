@@ -158,11 +158,12 @@ def scheduleJobs(jobs):
 
 def pingDB():
     '''Pings to keep worker awake'''
+    getPoem()
     return "Ping!"
 
 
 def updateLoop():
-    scheduler.add_job(pingDB, 'interval', minutes=30)
+    scheduler.add_job(pingDB, 'interval', minutes=25)
     jobs = getJobs()
     if not jobs:
         addJobsToDatabase()
