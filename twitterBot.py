@@ -56,7 +56,13 @@ def getJobs():
     token = getToken(API_USERNAME, API_PASSWORD)
     response = requests.get(API_URL+"/api/jobs",
                             headers={"Authorization": "Bearer "+token})
-    return response.json()
+    jobs = response.json()
+    for job in jobs:
+        if not jobInFuture(job):
+        removeJob(job['id'])
+        jobs.remove(job)
+    
+    return jobs
 
 
 def removeJob(id):
@@ -160,6 +166,12 @@ def pingDB():
     '''Pings to keep worker awake'''
     getPoem()
     return "Ping!"
+
+def jobInFuture(job):
+    '''Checks if job schedule is still ahead'''
+    job = datetime.datetime.fromisoformat(job['scheduledTime']
+
+    return (datetime.datetime.now() - job) < datetime.timedelta()
 
 
 def updateLoop():
