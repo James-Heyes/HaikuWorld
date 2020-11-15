@@ -21,6 +21,7 @@ try:
     API_URL = environ['API_URL']
     API_USERNAME = environ['API_USERNAME']
     API_PASSWORD = environ['API_PASSWORD']
+    FREQUENCY = environ['FREQUENCY']
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
     api = tweepy.API(auth)
@@ -50,6 +51,13 @@ def addJob(date):
                              headers={"Authorization": "Bearer "+token})
     #print(response.content)
     #return response.json()
+
+
+def jobInFuture(job):
+    '''Checks if job schedule is still ahead'''
+    job = datetime.datetime.fromisoformat(job['scheduledTime'])
+
+    return (datetime.datetime.now() - job) < datetime.timedelta()
 
 
 def getJobs():
@@ -139,7 +147,7 @@ def updateStatus(id):
 
 
 def addJobsToDatabase():
-    schedule = createTwitterHeatMap.createTweetSchedule(30)
+    schedule = createTwitterHeatMap.createTweetSchedule(FREQUENCY)
     today = datetime.datetime.today()
     year, month, day, hour, minute, second = today.timetuple()[0:6]
     weekday = datetime.datetime.weekday(today)
@@ -148,9 +156,10 @@ def addJobsToDatabase():
     schedule = schedule[closest+1::]
     #Add jobs to scheduler
     schedule = [datetime.datetime(year, month, day+(job//24 - weekday), job%24) for job in schedule]
-    firstTime = today + datetime.timedelta(seconds=5)
-    schedule = [firstTime] + schedule
-    for x, job in enumerate(schedule):
+    firstTime = today + datetime.timedelta(minutes=5)
+    lastTime = today + datetime.timedelta(days=7-weekday)
+    schedule = [firstTime] + schedule + [lastTime]
+    for job in schedule:
         addJob(job)
     print(scheduleJobs)
 
@@ -167,12 +176,6 @@ def pingDB():
     getPoem()
     return "Ping!"
 
-def jobInFuture(job):
-    '''Checks if job schedule is still ahead'''
-    job = datetime.datetime.fromisoformat(job['scheduledTime'])
-
-    return (datetime.datetime.now() - job) < datetime.timedelta()
-
 
 def updateLoop():
     scheduler.add_job(pingDB, 'interval', minutes=25)
@@ -186,6 +189,5 @@ def updateLoop():
 
 
 if __name__ == "__main__":
-    #clearJobSchedule()
     updateLoop()
 
