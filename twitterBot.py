@@ -21,7 +21,7 @@ try:
     API_URL = environ['API_URL']
     API_USERNAME = environ['API_USERNAME']
     API_PASSWORD = environ['API_PASSWORD']
-    FREQUENCY = environ['FREQUENCY']
+    FREQUENCY = int(environ['FREQUENCY'])
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
     auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
     api = tweepy.API(auth)
